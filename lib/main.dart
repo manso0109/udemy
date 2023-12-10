@@ -23,6 +23,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:window_manager/window_manager.dart';
 
 Future<void> main() async {
+  // 1. checkout master
+  // 2. update master
+  // 3. create branch
+  // 4. code ..
+  // 5. commit
+  // 6. checkout master
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
@@ -102,40 +108,52 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (BuildContext context) =>
-              AppCubit()..changeAppMode(fromShared: isDark),
+        providers: [
+          BlocProvider(
+            create: (BuildContext context) =>
+                AppCubit()..changeAppMode(fromShared: isDark),
+          ),
+          BlocProvider(
+            create: (BuildContext context) => ShopLoginCubit(),
+          ),
+          BlocProvider(
+              create: ((context) =>
+                  ShopCategoriesCubit()..GetCategoriesData())),
+          BlocProvider(
+              create: ((context) => ShopCubit()
+                ..GetHomeData(token)
+                ..GetproductDat2a()
+                ..GetproductData())),
+          BlocProvider(create: ((context) => SearchCubit())),
+          BlocProvider(
+              create: ((context) => SocialCubit()
+                ..GetUser()
+                ..getUsers()
+                ..getPosts()))
+        ],
+        child: BlocConsumer<AppCubit, AppStates>(
+          listener: (BuildContext context, state) {},
+          builder: (BuildContext context, state) => MaterialApp(
+              debugShowCheckedModeBanner: false,
+              theme: AppCubit.get(context).isDark
+                  ? AppCubit.get(context).darkTheme
+                  : AppCubit.get(context).lightTheme,
+              themeMode: AppCubit.get(context).isDark
+                  ? AppCubit.get(context).appMode = ThemeMode.dark
+                  : AppCubit.get(context).appMode = ThemeMode.light,
+              home: const NativeCodeScreen()),
         ),
-        BlocProvider(
-          create: (BuildContext context) => ShopLoginCubit(),
-        ),
-        BlocProvider(
-            create: ((context) => ShopCategoriesCubit()..GetCategoriesData())),
-        BlocProvider(
-            create: ((context) => ShopCubit()
-              ..GetHomeData(token)
-              ..GetproductDat2a()
-              ..GetproductData())),
-        BlocProvider(create: ((context) => SearchCubit())),
-        BlocProvider(
-            create: ((context) => SocialCubit()
-              ..GetUser()
-              ..getUsers()
-              ..getPosts()))
-      ],
-      child: BlocConsumer<AppCubit, AppStates>(
-        listener: (BuildContext context, state) {},
-        builder: (BuildContext context, state) => MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: AppCubit.get(context).isDark
-                ? AppCubit.get(context).darkTheme
-                : AppCubit.get(context).lightTheme,
-            themeMode: AppCubit.get(context).isDark
-                ? AppCubit.get(context).appMode = ThemeMode.dark
-                : AppCubit.get(context).appMode = ThemeMode.light,
-            home: const NativeCodeScreen()),
-      ),
-    );
+        hjgh);
   }
 }
+
+// 1. checkout master
+// 2. update master
+// 3. create branch
+// 4. code ..
+// 5. commit
+// 6. checkout master
+// 7. update master
+// 8. checkout your local
+// 9. merge master with my current branch
+// 10. 
